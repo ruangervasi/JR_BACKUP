@@ -34,7 +34,7 @@
 
         <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8" Content="BACKUP JR SISTEMAS" HorizontalAlignment="Center" FontSize="20"/>
         <Label Grid.Column="0" Grid.Row="2" Content="Local do Backup:" HorizontalAlignment="Right" Padding="0" FontSize="14" Margin="2,2,2,2"/>
-        <TextBox x:Name="LocalBackup" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="6" Margin="2,2,10,2" MouseEnter="LocalBackup_MouseEnter"/>
+        <TextBox x:Name="LocalBackup" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="6" Margin="2,2,10,2" MouseDown="LocalBackup_MouseDown"/>
         <Label Grid.Column="0" Grid.Row="3" Content="Frequencia:" HorizontalAlignment="Right" Padding="0" FontSize="14" Margin="2,2,2,2"/>
 
         <GroupBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="6" Margin="0,0,10,0">
@@ -60,13 +60,13 @@
                 <Label Grid.Column="2" Grid.Row="1" Content="Mensal" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Margin="15,2,2,2"/>
 
                 <Label Grid.Column="3" Grid.Row="1" Content="Dia do Mês:" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Margin="2,2,0,2"/>
-                <TextBox x:Name="DiaMes" Grid.Column="4" Grid.Row="1" Margin="5,2,5,2"/>
+                <TextBox x:Name="DiaMes" Grid.Column="4" Grid.Row="1" Margin="5,2,5,2" IsEnabled="False"/>
 
             </Grid>
         </GroupBox>
 
 
-        <GroupBox x:Name="GroupSemanal" Grid.Column="7" Grid.Row="2" Grid.RowSpan="6" Header="Semanal" Margin="2,2,-67,2">
+        <GroupBox x:Name="GroupSemanal" Grid.Column="7" Grid.Row="2" Grid.RowSpan="6" Header="Semanal" Margin="2,2,-67,2" IsEnabled="False">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="19*" />
@@ -114,7 +114,7 @@
         <TextBox x:Name="Hora5" Grid.Column="5" Grid.Row="4" MaxLength="5" Margin="2,2,10,2" TextChanged="Hora5_TextChanged"/>
         <TextBox x:Name="Hora6" Grid.Column="6" Grid.Row="4" MaxLength="5" Margin="2,2,10,2" TextChanged="Hora6_TextChanged"/>
 
-        <Button x:Name="Cancelar" Grid.Column="1" Grid.Row="6" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="2,2,10,2" Content="Cancelar"/>
+        <Button x:Name="Cancelar" Grid.Column="1" Grid.Row="6" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="2,2,10,2" Content="Cancelar" Click="Cancelar_Click"/>
         <Button x:Name="TestarBackup" Grid.Column="3" Grid.Row="6" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="2,2,10,2" Content="Testar" Click="btnTestar_Click"/>
         <Button x:Name="SalvarAlteracoes" Grid.Column="5" Grid.Row="6" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="2,2,10,2" Content="Salvar" Click="SalvarAlteracoes_Click"/>
     </Grid>

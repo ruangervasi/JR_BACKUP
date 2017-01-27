@@ -24,34 +24,38 @@ namespace JR_BACKUP
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //lê arquivo de configurações:
-            string[] ConfigBackup = File.ReadAllLines(@"C:\gsn\ConfigBackup.ini");
+            if (File.Exists(@"C:\gsn\ConfigBackup.ini"))
+            {
+                string[] ConfigBackup = File.ReadAllLines(@"C:\gsn\ConfigBackup.ini");
 
-            LocalBackup.Text = ConfigBackup[0];
-            if (ConfigBackup[1] == "1") { RadioDiario.IsChecked = true; }
-            if (ConfigBackup[2] == "1") { RadioSemanal.IsChecked = true; }
-            if (ConfigBackup[3] == "1") { RadioMensal.IsChecked = true; }
-            if (ConfigBackup[4] == ":") { Hora1.Text = string.Empty; } else { Hora1.Text = ConfigBackup[4]; }
-            if (ConfigBackup[5] == ":") { Hora2.Text = string.Empty; } else { Hora1.Text = ConfigBackup[5]; }
-            if (ConfigBackup[6] == ":") { Hora3.Text = string.Empty; } else { Hora1.Text = ConfigBackup[6]; }
-            if (ConfigBackup[7] == ":") { Hora4.Text = string.Empty; } else { Hora1.Text = ConfigBackup[7]; }
-            if (ConfigBackup[8] == ":") { Hora5.Text = string.Empty; } else { Hora1.Text = ConfigBackup[8]; }
-            if (ConfigBackup[9] == ":") { Hora6.Text = string.Empty; } else { Hora1.Text = ConfigBackup[9]; }
-            if (ConfigBackup[10] == "1") { CheckSegunda.IsChecked = true; }
-            if (ConfigBackup[11] == "1") { CheckTerca.IsChecked = true; }
-            if (ConfigBackup[12] == "1") { CheckQuarta.IsChecked = true; }
-            if (ConfigBackup[13] == "1") { CheckQuinta.IsChecked = true; }
-            if (ConfigBackup[14] == "1") { CheckSexta.IsChecked = true; }
-            if (ConfigBackup[15] == "1") { CheckSabado.IsChecked = true; }
-            if (ConfigBackup[16] == "1") { CheckDomingo.IsChecked = true; }
-            DiaMes.Text = ConfigBackup[17];
-            
-            GroupSemanal.IsEnabled = false;
-            DiaMes.IsEnabled = false;
+                LocalBackup.Text = ConfigBackup[0];
+                if (ConfigBackup[1] == "1") { RadioDiario.IsChecked = true; }
+                if (ConfigBackup[2] == "1") { RadioSemanal.IsChecked = true; GroupSemanal.IsEnabled = true; }
+                if (ConfigBackup[3] == "1") { RadioMensal.IsChecked = true; DiaMes.IsEnabled = true; }
+                if (ConfigBackup[4] == ":") { Hora1.Text = string.Empty; } else { Hora1.Text = ConfigBackup[4]; }
+                if (ConfigBackup[5] == ":") { Hora2.Text = string.Empty; } else { Hora2.Text = ConfigBackup[5]; }
+                if (ConfigBackup[6] == ":") { Hora3.Text = string.Empty; } else { Hora3.Text = ConfigBackup[6]; }
+                if (ConfigBackup[7] == ":") { Hora4.Text = string.Empty; } else { Hora4.Text = ConfigBackup[7]; }
+                if (ConfigBackup[8] == ":") { Hora5.Text = string.Empty; } else { Hora5.Text = ConfigBackup[8]; }
+                if (ConfigBackup[9] == ":") { Hora6.Text = string.Empty; } else { Hora6.Text = ConfigBackup[9]; }
+                if (ConfigBackup[10] == "1") { CheckSegunda.IsChecked = true; }
+                if (ConfigBackup[11] == "1") { CheckTerca.IsChecked = true; }
+                if (ConfigBackup[12] == "1") { CheckQuarta.IsChecked = true; }
+                if (ConfigBackup[13] == "1") { CheckQuinta.IsChecked = true; }
+                if (ConfigBackup[14] == "1") { CheckSexta.IsChecked = true; }
+                if (ConfigBackup[15] == "1") { CheckSabado.IsChecked = true; }
+                if (ConfigBackup[16] == "1") { CheckDomingo.IsChecked = true; }
+                DiaMes.Text = ConfigBackup[17];
+            }
         }
 
         private readonly BackgroundWorker worker = new BackgroundWorker();
 
-        public int count = 0;
+        public string RetornaNomeCliente()
+        {
+            string NomeCliente = "JR PDV SISTEMAS";
+            return NomeCliente;
+        }
 
         private void UseThread1 ()
         {
@@ -84,25 +88,25 @@ namespace JR_BACKUP
 
             string cliente = "JR PDV SISTEMAS E AUTOMAÇÃO LTDA ME";
 
-            //if (Directory.Exists(@"c:\gsn"))
-            //{
-            //    CopiaArquivos(@"c:\gsn", @"c:\tempBackup\gsn");
-            //}
+            if (Directory.Exists(@"c:\gsn"))
+            {
+                CopiaArquivos(@"c:\gsn", @"c:\tempBackup\gsn");
+            }
 
             if (Directory.Exists(@"c:\ecf"))
             {
                 CopiaArquivos(@"c:\ecf", @"c:\tempBackup\ecf");
             }
 
-            //if (Directory.Exists(@"c:\jrsystem"))
-            //{
-            //    CopiaArquivos(@"c:\jrsystem", @"c:\tempBackup\jrsystem");
-            //}
+            if (Directory.Exists(@"c:\jrsystem"))
+            {
+                CopiaArquivos(@"c:\jrsystem", @"c:\tempBackup\jrsystem");
+            }
 
-            //if (Directory.Exists(@"c:\mysql1\data"))
-            //{
-            //    CopiaArquivos(@"c:\mysql\data", @"c:\tempBackup\banco");
-            //}
+            if (Directory.Exists(@"c:\mysql1\data"))
+            {
+                CopiaArquivos(@"c:\mysql\data", @"c:\tempBackup\banco");
+            }
 
             Compress();
 
@@ -125,14 +129,7 @@ namespace JR_BACKUP
             vWriter.Flush();
             vWriter.Close();
 
-            if (IsConnected() == true)
-            {
-                System.Diagnostics.Process.Start(@"c:\gsn\email.exe");
-            }
-            else
-            {
-                
-            }
+            System.Diagnostics.Process.Start(@"c:\gsn\email.exe");
 
             if (Directory.Exists(@"c:\tempBackup"))
             {
@@ -175,15 +172,6 @@ namespace JR_BACKUP
                 }
             }
             return valorCampo;
-        }
-
-        [DllImport("wininet.dll")]
-        private extern static Boolean InternetGetConnectedState(out int Description, int ReservedValue);
-
-        public static Boolean IsConnected()
-        {
-            int Description;
-            return InternetGetConnectedState(out Description, 0);
         }
 
         private void Hora1_TextChanged(object sender, TextChangedEventArgs e)
@@ -241,6 +229,7 @@ namespace JR_BACKUP
         private void RadioSemanal_Checked(object sender, RoutedEventArgs e)
         {
             GroupSemanal.IsEnabled = true;
+            DiaMes.IsEnabled = false;
         }
         
         private void RadioMensal_Checked(object sender, RoutedEventArgs e)
@@ -251,23 +240,23 @@ namespace JR_BACKUP
 
         private void SalvarAlteracoes_Click(object sender, RoutedEventArgs e)
         {
-            string linha0 = LocalBackup.Text;
-            var linha1 = string.Empty; if (RadioDiario.IsChecked == true) { linha1 = "1"; } else { linha1 = "0"; }
+            var linha0 = string.Empty; if (LocalBackup.Text != string.Empty) { linha0 = LocalBackup.Text; } else { linha0 = @"c:\"; }
+            var linha1 = string.Empty; if (RadioDiario.IsChecked == true) { linha1 = "1"; } else if (RadioDiario.IsChecked == false && RadioSemanal.IsChecked == false && RadioMensal.IsChecked == false) { linha1 = "1"; } else { linha1 = "0"; }
             var linha2 = string.Empty; if (RadioSemanal.IsChecked == true) { linha2 = "1"; } else { linha2 = "0"; }
             var linha3 = string.Empty; if (RadioMensal.IsChecked == true) { linha3 = "1"; } else { linha3 = "0"; }
-            var linha4 = string.Empty; if (Hora1.Text != "") { linha4 = Hora1.Text; } else { linha4 = ":"; }
+            var linha4 = string.Empty; if (Hora1.Text != "") { linha4 = Hora1.Text; } else { linha4 = "12:00"; }
             var linha5 = string.Empty; if (Hora2.Text != "") { linha5 = Hora2.Text; } else { linha5 = ":"; }
             var linha6 = string.Empty; if (Hora3.Text != "") { linha6 = Hora3.Text; } else { linha6 = ":"; }
             var linha7 = string.Empty; if (Hora4.Text != "") { linha7 = Hora4.Text; } else { linha7 = ":"; }
             var linha8 = string.Empty; if (Hora5.Text != "") { linha8 = Hora5.Text; } else { linha8 = ":"; }
             var linha9 = string.Empty; if (Hora6.Text != "") { linha9 = Hora6.Text; } else { linha9 = ":"; }
-            var linha10 = string.Empty; if (CheckSegunda.IsChecked == true) { linha10 = "1"; } else { linha10 = "0"; }
-            var linha11 = string.Empty; if (CheckTerca.IsChecked == true) { linha11 = "1"; } else { linha11 = "0"; }
-            var linha12 = string.Empty; if (CheckQuarta.IsChecked == true) { linha12 = "1"; } else { linha12 = "0"; }
-            var linha13 = string.Empty; if (CheckQuinta.IsChecked == true) { linha13 = "1"; } else { linha13 = "0"; }
-            var linha14 = string.Empty; if (CheckSexta.IsChecked == true) { linha14 = "1"; } else { linha14 = "0"; }
-            var linha15 = string.Empty; if (CheckSabado.IsChecked == true) { linha15 = "1"; } else { linha15 = "0"; }
-            var linha16 = string.Empty; if (CheckDomingo.IsChecked == true) { linha16 = "1"; } else { linha16 = "0"; }
+            var linha10 = string.Empty; if (CheckSegunda.IsChecked == true && GroupSemanal.IsEnabled == true) { linha10 = "1"; } else { linha10 = "0"; }
+            var linha11 = string.Empty; if (CheckTerca.IsChecked == true && GroupSemanal.IsEnabled == true) { linha11 = "1"; } else { linha11 = "0"; }
+            var linha12 = string.Empty; if (CheckQuarta.IsChecked == true && GroupSemanal.IsEnabled == true) { linha12 = "1"; } else { linha12 = "0"; }
+            var linha13 = string.Empty; if (CheckQuinta.IsChecked == true && GroupSemanal.IsEnabled == true) { linha13 = "1"; } else { linha13 = "0"; }
+            var linha14 = string.Empty; if (CheckSexta.IsChecked == true && GroupSemanal.IsEnabled == true) { linha14 = "1"; } else { linha14 = "0"; }
+            var linha15 = string.Empty; if (CheckSabado.IsChecked == true && GroupSemanal.IsEnabled == true) { linha15 = "1"; } else { linha15 = "0"; }
+            var linha16 = string.Empty; if (CheckDomingo.IsChecked == true && GroupSemanal.IsEnabled == true) { linha16 = "1"; } else { linha16 = "0"; }
             var linha17 = string.Empty; if (DiaMes.Text != "") { linha17 = DiaMes.Text; } else { linha17 = "0"; }
 
             if (File.Exists(@"c:\gsn\ConfigBackup.ini"))
@@ -276,6 +265,7 @@ namespace JR_BACKUP
             }
 
             StreamWriter vWriter = new StreamWriter(@"c:\gsn\ConfigBackup.ini", true);
+            vWriter.WriteLine(linha0);
             vWriter.WriteLine(linha1);
             vWriter.WriteLine(linha2);
             vWriter.WriteLine(linha3);
@@ -297,10 +287,15 @@ namespace JR_BACKUP
             vWriter.Close();
         }
 
-        private void LocalBackup_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        private void LocalBackup_MouseDown(object sender, System.Windows.Input.MouseEventArgs e)
         {
             FolderBrowserDialog browse = new FolderBrowserDialog();
             LocalBackup.Text = browse.SelectedPath;
+        }
+
+        private void Cancelar_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
