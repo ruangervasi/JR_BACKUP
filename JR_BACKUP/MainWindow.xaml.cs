@@ -103,7 +103,7 @@ namespace JR_BACKUP
                 CopiaArquivos(@"c:\jrsystem", @"c:\tempBackup\jrsystem");
             }
 
-            if (Directory.Exists(@"c:\mysql1\data"))
+            if (Directory.Exists(@"c:\mysql\data"))
             {
                 CopiaArquivos(@"c:\mysql\data", @"c:\tempBackup\banco");
             }
