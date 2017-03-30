@@ -17,7 +17,9 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -33,6 +35,7 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8" Content="BACKUP JR SISTEMAS" HorizontalAlignment="Center" FontSize="20"/>
+        <CheckBox x:Name="Ativo" Grid.Column="8" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Ativo"/>
         <Label Grid.Column="0" Grid.Row="2" Content="Local do Backup:" HorizontalAlignment="Right" Padding="0" FontSize="14" Margin="2,2,2,2"/>
         <TextBox x:Name="LocalBackup" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="6" Margin="2,2,10,2" MouseDown="LocalBackup_MouseDown"/>
         <Label Grid.Column="0" Grid.Row="3" Content="Frequencia:" HorizontalAlignment="Right" Padding="0" FontSize="14" Margin="2,2,2,2"/>
@@ -64,8 +67,6 @@
 
             </Grid>
         </GroupBox>
-
-
         <GroupBox x:Name="GroupSemanal" Grid.Column="7" Grid.Row="2" Grid.RowSpan="6" Header="Semanal" Margin="2,2,-67,2" IsEnabled="False">
             <Grid>
                 <Grid.RowDefinitions>
@@ -117,5 +118,9 @@
         <Button x:Name="Cancelar" Grid.Column="1" Grid.Row="6" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="2,2,10,2" Content="Cancelar" Click="Cancelar_Click"/>
         <Button x:Name="TestarBackup" Grid.Column="3" Grid.Row="6" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="2,2,10,2" Content="Testar" Click="btnTestar_Click"/>
         <Button x:Name="SalvarAlteracoes" Grid.Column="5" Grid.Row="6" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="2,2,10,2" Content="Salvar" Click="SalvarAlteracoes_Click"/>
+
+        <Label x:Name="LabelInfoBackup" Grid.Column="0" Grid.Row="8" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="9"/>
+        <Label x:Name="LabelInfoEmail" Grid.Column="0" Grid.Row="9" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="9"/>
+        <Label x:Name="LabelInfoOther" Grid.Column="0" Grid.Row="10" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="9"/>
     </Grid>
 </Window>
