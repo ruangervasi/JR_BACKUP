@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JR_BACKUP", "JR_BACKUP\JR_BACKUP.csproj", "{142484BC-02AA-4DEC-B6ED-9AFD4B69A75C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JRBackup_Service", "..\JRBackup_Service\JRBackup_Service\JRBackup_Service.csproj", "{04802A9C-CBF7-4F00-8F1B-9A761CFF44E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBConn", "ConnDB\DBConn.csproj", "{894FF898-984E-4854-99E6-38A43D3C358F}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "JRBackupSetup", "JRBackupSetup\JRBackupSetup.vdproj", "{E30A6AF2-A5E7-423B-BA4E-990A99124BF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JRBackup_Service", "JRBackup_Service\JRBackup_Service\JRBackup_Service.csproj", "{04802A9C-CBF7-4F00-8F1B-9A761CFF44E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notificador", "Notificador\Notificador.csproj", "{D3C630FB-2FF4-4ED5-AB95-1F6F22524D78}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup_JRBackup", "Setup_JRBackup\Setup_JRBackup.vdproj", "{0B7EE073-59F2-4545-A069-CAAE8202BFBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,12 +23,22 @@ Global
 		{142484BC-02AA-4DEC-B6ED-9AFD4B69A75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{142484BC-02AA-4DEC-B6ED-9AFD4B69A75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{142484BC-02AA-4DEC-B6ED-9AFD4B69A75C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{894FF898-984E-4854-99E6-38A43D3C358F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{894FF898-984E-4854-99E6-38A43D3C358F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{894FF898-984E-4854-99E6-38A43D3C358F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{894FF898-984E-4854-99E6-38A43D3C358F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{894FF898-984E-4854-99E6-38A43D3C358F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04802A9C-CBF7-4F00-8F1B-9A761CFF44E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{04802A9C-CBF7-4F00-8F1B-9A761CFF44E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04802A9C-CBF7-4F00-8F1B-9A761CFF44E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04802A9C-CBF7-4F00-8F1B-9A761CFF44E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E30A6AF2-A5E7-423B-BA4E-990A99124BF4}.Debug|Any CPU.ActiveCfg = Debug
-		{E30A6AF2-A5E7-423B-BA4E-990A99124BF4}.Release|Any CPU.ActiveCfg = Release
+		{D3C630FB-2FF4-4ED5-AB95-1F6F22524D78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3C630FB-2FF4-4ED5-AB95-1F6F22524D78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3C630FB-2FF4-4ED5-AB95-1F6F22524D78}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D3C630FB-2FF4-4ED5-AB95-1F6F22524D78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3C630FB-2FF4-4ED5-AB95-1F6F22524D78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B7EE073-59F2-4545-A069-CAAE8202BFBB}.Debug|Any CPU.ActiveCfg = Debug
+		{0B7EE073-59F2-4545-A069-CAAE8202BFBB}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
