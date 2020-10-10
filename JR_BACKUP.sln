@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JR_BACKUP", "JR_BACKUP\JR_BACKUP.csproj", "{142484BC-02AA-4DEC-B6ED-9AFD4B69A75C}"
 EndProject
@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JRBackup_Service", "JRBacku
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notificador", "Notificador\Notificador.csproj", "{D3C630FB-2FF4-4ED5-AB95-1F6F22524D78}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup_JRBackup", "Setup_JRBackup\Setup_JRBackup.vdproj", "{0B7EE073-59F2-4545-A069-CAAE8202BFBB}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "Setup1\Setup1.vdproj", "{64B07F7F-13C2-4596-8500-F92284AAEC47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,13 @@ Global
 		{D3C630FB-2FF4-4ED5-AB95-1F6F22524D78}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{D3C630FB-2FF4-4ED5-AB95-1F6F22524D78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3C630FB-2FF4-4ED5-AB95-1F6F22524D78}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0B7EE073-59F2-4545-A069-CAAE8202BFBB}.Debug|Any CPU.ActiveCfg = Debug
-		{0B7EE073-59F2-4545-A069-CAAE8202BFBB}.Release|Any CPU.ActiveCfg = Release
+		{64B07F7F-13C2-4596-8500-F92284AAEC47}.Debug|Any CPU.ActiveCfg = Debug
+		{64B07F7F-13C2-4596-8500-F92284AAEC47}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73FA95EF-8995-4521-8BB7-63DCA92A3A96}
 	EndGlobalSection
 EndGlobal

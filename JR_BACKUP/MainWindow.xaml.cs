@@ -15,6 +15,7 @@ using NMDD_EnviaEmail;
 using System.Data;
 using System.Management;
 using System.Text;
+using JR_BACKUP.Models;
 
 namespace JR_BACKUP
 {
@@ -27,17 +28,20 @@ namespace JR_BACKUP
         {
             InitializeComponent();
         }
-         
-        public string backuplocal = string.Empty;
+
+        //private DBConn dbMetodos = new DBConn();
+        private readonly BackgroundWorker worker = new BackgroundWorker();
+        ConfigBackup _configBackup = new ConfigBackup();
+        /*public string backuplocal = string.Empty;
         public string backuplocal2 = string.Empty;
-        private DBConn dbMetodos = new DBConn();
+        
         public string[] valores = new string[3];
         public string mensagemSucesso;
         public string mensagemErro;
         public string ErroBkpDescricao;
         public string Origem;
         public string Destino1;
-        public string Destino2;
+        public string Destino2;*/
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -45,11 +49,10 @@ namespace JR_BACKUP
             {
                 if (Directory.Exists(@"c:"))
                 {
-
                     if (!File.Exists(@"C:\gsn\ConfigBackup.ini"))
                     {
                         StreamWriter vWriter = new StreamWriter(@"c:\gsn\ConfigBackup.ini", true);
-                        vWriter.WriteLine(@"c:\");
+                        vWriter.WriteLine(@"C:\");
                         vWriter.WriteLine("1");
                         vWriter.WriteLine("0");
                         vWriter.WriteLine("0");
@@ -71,8 +74,8 @@ namespace JR_BACKUP
                         vWriter.WriteLine(" ");
                         vWriter.WriteLine(" ");
                         vWriter.WriteLine(" ");
+                        vWriter.WriteLine("0");
                         vWriter.WriteLine(@"C:\");
-                        vWriter.WriteLine("-");
                         vWriter.WriteLine("-");
                         vWriter.Flush();
                         vWriter.Close();
@@ -84,62 +87,43 @@ namespace JR_BACKUP
                         string[] ConfigBackup = File.ReadAllLines(@"C:\gsn\ConfigBackup.ini");
 
                         LocalBackup.Text = ConfigBackup[0];
-                        if (ConfigBackup[1] == "1") { RadioDiario.IsChecked = true; }
-                        if (ConfigBackup[2] == "1") { RadioSemanal.IsChecked = true; GroupSemanal.IsEnabled = true; }
-                        if (ConfigBackup[3] == "1") { RadioMensal.IsChecked = true; DiaMes.IsEnabled = true; }
-                        if (ConfigBackup[4] == ":") { Hora1.Text = string.Empty; } else { Hora1.Text = ConfigBackup[4]; }
-                        if (ConfigBackup[5] == ":") { Hora2.Text = string.Empty; } else { Hora2.Text = ConfigBackup[5]; }
-                        if (ConfigBackup[6] == ":") { Hora3.Text = string.Empty; } else { Hora3.Text = ConfigBackup[6]; }
-                        if (ConfigBackup[7] == ":") { Hora4.Text = string.Empty; } else { Hora4.Text = ConfigBackup[7]; }
-                        if (ConfigBackup[8] == ":") { Hora5.Text = string.Empty; } else { Hora5.Text = ConfigBackup[8]; }
-                        if (ConfigBackup[9] == ":") { Hora6.Text = string.Empty; } else { Hora6.Text = ConfigBackup[9]; }
-                        if (ConfigBackup[10] == "1") { CheckSegunda.IsChecked = true; }
-                        if (ConfigBackup[11] == "1") { CheckTerca.IsChecked = true; }
-                        if (ConfigBackup[12] == "1") { CheckQuarta.IsChecked = true; }
-                        if (ConfigBackup[13] == "1") { CheckQuinta.IsChecked = true; }
-                        if (ConfigBackup[14] == "1") { CheckSexta.IsChecked = true; }
-                        if (ConfigBackup[15] == "1") { CheckSabado.IsChecked = true; }
-                        if (ConfigBackup[16] == "1") { CheckDomingo.IsChecked = true; }
-                        DiaMes.Text = ConfigBackup[17];
-                        if (ConfigBackup[18] == "1") { Ativo.IsChecked = true; }
-                        valores[0] = ConfigBackup[19];
-                        valores[1] = ConfigBackup[20];
-                        valores[2] = ConfigBackup[21];
-                        if (ConfigBackup[22] == "0") { LocalBackup2.Text = ""; } else { LocalBackup2.Text = ConfigBackup[22]; }
-                        backuplocal = ConfigBackup[0];
-                        if (ConfigBackup[22] == "0") { backuplocal2 = "0"; } else { backuplocal2 = ConfigBackup[22]; }
-                        if (ConfigBackup[23] != string.Empty) { CbxOrigem.Text = ConfigBackup[23]; Origem = ConfigBackup[23]; }
-                        if (ConfigBackup[24] != "-") { Destino1 = ConfigBackup[24]; }
-                        if (ConfigBackup[25] != "-") { Destino2 = ConfigBackup[25]; }
-
+                        _configBackup.LocalBackup1 = ConfigBackup[0];
+                        if (ConfigBackup[4] == ":") { Hora1.Text = string.Empty; } else { Hora1.Text = ConfigBackup[4]; _configBackup.Hora1 = ConfigBackup[4]; }
+                        if (ConfigBackup[5] == ":") { Hora2.Text = string.Empty; } else { Hora2.Text = ConfigBackup[5]; _configBackup.Hora2 = ConfigBackup[5]; }
+                        if (ConfigBackup[6] == ":") { Hora3.Text = string.Empty; } else { Hora3.Text = ConfigBackup[6]; _configBackup.Hora3 = ConfigBackup[6]; }
+                        if (ConfigBackup[7] == ":") { Hora4.Text = string.Empty; } else { Hora4.Text = ConfigBackup[7]; _configBackup.Hora4 = ConfigBackup[7]; }
+                        if (ConfigBackup[8] == ":") { Hora5.Text = string.Empty; } else { Hora5.Text = ConfigBackup[8]; _configBackup.Hora5 = ConfigBackup[8]; }
+                        if (ConfigBackup[9] == ":") { Hora6.Text = string.Empty; } else { Hora6.Text = ConfigBackup[9]; _configBackup.Hora6 = ConfigBackup[9]; }
+                        if (ConfigBackup[18] == "1") { Ativo.IsChecked = true; _configBackup.Ativo = true; }
+                        if (ConfigBackup[22] == "0") { LocalBackup2.Text = ""; } else { LocalBackup2.Text = ConfigBackup[22]; _configBackup.LocalBackup2 = ConfigBackup[22]; }
+                        if (ConfigBackup[23] == "0") { CbxOrigem.Text = ""; } else { CbxOrigem.Text = ConfigBackup[23]; _configBackup.Origem = ConfigBackup[23]; }
                     }
-                    System.Windows.Controls.DataGrid dgvresult = new System.Windows.Controls.DataGrid();
-                    dgvresult.ItemsSource = dbMetodos.RetornaDataView("Select razaosocial,CNPJ_CPF,telefone from empresa LIMIT 1");
-                    dgvresult.CanUserAddRows = false;
-                    foreach (DataRowView row in dgvresult.Items)
-                    {
-                        valores[0] = row.Row.ItemArray[0].ToString();
-                        valores[1] = row.Row.ItemArray[1].ToString();
-                        valores[2] = row.Row.ItemArray[2].ToString();
-                    }
-                    mensagemSucesso = "Backup Realizado com Sucesso no cliente: \n\nNome: " + valores[0] + "\nCNPJ: " + valores[1] + "\nTelefone: " + valores[2] + "\n\nBackup JR Sistemas";
-                    mensagemErro = "\nO erro acima ocorreu no cliente: \n\nNome: " + valores[0] + "\nCNPJ: " + valores[1] + "\nTelefone: " + valores[2] + "\n\nPor favor, verifique!!!\n\nAtt, Backup JR Sistemas";
-
                     dadosUnidade(LocalBackup.Text.PadLeft(2));
                 }
             }
             catch (Exception ex)
             {
-                EnviaEmail(ex.ToString() + mensagemErro, "Erro no cliente " + valores[0]);
+
             }
 
         }
 
-        private readonly BackgroundWorker worker = new BackgroundWorker();
-
         private void UseThread1()
         {
+            lblFazendoAguarde.Visibility = Visibility.Visible;
             TestarBackup.IsEnabled = false;
+            Cancelar.IsEnabled = false;
+            SalvarAlteracoes.IsEnabled = false;
+            Ativo.IsEnabled = false;
+            LocalBackup.IsEnabled = false;
+            LocalBackup2.IsEnabled = false;
+            CbxOrigem.IsEnabled = false;
+            Hora1.IsEnabled = false;
+            Hora2.IsEnabled = false;
+            Hora3.IsEnabled = false;
+            Hora4.IsEnabled = false;
+            Hora5.IsEnabled = false;
+            Hora6.IsEnabled = false;
             worker.DoWork += worker_DoWork;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
             worker.RunWorkerAsync();
@@ -147,6 +131,7 @@ namespace JR_BACKUP
 
         public void btnTestar_Click(object sender, RoutedEventArgs e)
         {
+
             UseThread1();
         }
 
@@ -185,119 +170,75 @@ namespace JR_BACKUP
 
         public void CopiaOrigemDestino(string origem, string destino)
         {
+            ExecutarCMD("cacls " + origem  + " /E /P Todos:F");
+            ExecutarCMD("cacls " + origem + " /E /P Usuários:F");
+            ExecutarCMD("cacls " + origem + " /E /P SISTEMA:F");
+            ExecutarCMD("cacls " + origem + " /E /P Users:F");
+
             if (Directory.Exists(origem))
             {
                 CopiaArquivos(origem, destino);
             }
         }
 
-        public void ConverteNomeUnidade()
-        {
-
-            foreach (DriveInfo drive in DriveInfo.GetDrives())
-            {
-                if (Destino1 == "-" || Destino1 == "" || Destino1 == null)
-                {
-                    if (drive.Name.Replace("\\", "") == backuplocal.Replace(backuplocal.Substring(2), ""))
-                    {
-                        Destino1 = drive.VolumeLabel;
-                    }
-                }
-                else
-                {
-                    if (drive.VolumeLabel == Destino1)
-                    {
-                        backuplocal = drive.Name.Replace(@"\", "") + backuplocal.Replace(backuplocal.Substring(2), "");
-                    }
-
-                }
-            }
-        }
-
-        public void ConverteNomeUnidade2()
-        {
-            foreach (DriveInfo drive in DriveInfo.GetDrives())
-            {
-                if (Destino2 != "-" || Destino2 == "" || Destino2 == null)
-                {
-                    if (drive.Name.Replace(@"\", "") == backuplocal2.Replace(backuplocal2.Substring(2), ""))
-                    {
-                        Destino2 = drive.VolumeLabel;
-                    }
-                }
-                else
-                {
-                    if (drive.VolumeLabel == Destino2)
-                    {
-                        backuplocal2 = drive.Name.Replace("\\", "") + backuplocal2.Replace(backuplocal2.Substring(2), "");
-                    }
-
-                }
-            }
-        }
-
         public void FazerBackup()
         {
+
             try
             {
-                if (Directory.Exists(Origem + "tempBackup"))
+                if (Directory.Exists(_configBackup.Origem + "tempBackup"))
                 {
-                    Directory.Delete(Origem + "tempBackup", true);
+                    Directory.Delete(_configBackup.Origem + "tempBackup", true);
                 }
 
-                CopiaOrigemDestino(Origem + @"gsn", Origem + @"tempBackup\gsn");
-                CopiaOrigemDestino(Origem + @"ecf", Origem + @"tempBackup\ecf");
-                CopiaOrigemDestino(Origem + @"financeiro", Origem + @"tempBackup\financeiro");
-                CopiaOrigemDestino(Origem + @"SisFinanceiro", Origem + @"tempBackup\SisFinanceiro");
-                CopiaOrigemDestino(Origem + @"SisFinanc", Origem + @"tempBackup\SisFinanc");
-                CopiaOrigemDestino(Origem + @"JRSystem", Origem + @"tempBackup\JRSystem");
-                CopiaOrigemDestino(Origem + @"mysql\data", Origem + @"tempBackup\banco");
-                CopiaOrigemDestino(Origem + @"ctbrural", Origem + @"tempBackup\ctbrural");
-                CopiaOrigemDestino(Origem + @"TEF_DIAL", Origem + @"tempBackup\tef_dial");
+                CopiaOrigemDestino(_configBackup.Origem + @"gsn", _configBackup.Origem + @"tempBackup\gsn");
+                CopiaOrigemDestino(_configBackup.Origem + @"ecf", _configBackup.Origem + @"tempBackup\ecf");
+                CopiaOrigemDestino(_configBackup.Origem + @"financeiro", _configBackup.Origem + @"tempBackup\financeiro");
+                CopiaOrigemDestino(_configBackup.Origem + @"SisFinanceiro", _configBackup.Origem + @"tempBackup\SisFinanceiro");
+                CopiaOrigemDestino(_configBackup.Origem + @"SisFinanc", _configBackup.Origem + @"tempBackup\SisFinanc");
+                CopiaOrigemDestino(_configBackup.Origem + @"JRSystem", _configBackup.Origem + @"tempBackup\JRSystem");
+                CopiaOrigemDestino(_configBackup.Origem + @"mysql\data", _configBackup.Origem + @"tempBackup\banco");
+                CopiaOrigemDestino(_configBackup.Origem + @"ctbrural", _configBackup.Origem + @"tempBackup\ctbrural");
+                CopiaOrigemDestino(_configBackup.Origem + @"TEF_DIAL", _configBackup.Origem + @"tempBackup\tef_dial");
 
                 try
                 {
-                    Compress(Origem + "tempBackup", backuplocal + "\\BackupJR");
+                    Compress(_configBackup.Origem + "tempBackup", _configBackup.LocalBackup1 + "\\BackupJR");
                 }
                 catch
                 {
-                    ConverteNomeUnidade();
-                    Compress(Origem + "tempBackup", backuplocal + "\\BackupJR");
+                    Compress(_configBackup.Origem + "tempBackup", _configBackup.LocalBackup1 + "\\BackupJR");
                 }
 
-                if (backuplocal2 != "0")
+                if (_configBackup.LocalBackup2 != "0")
                 {
                     try
                     {
-                        Compress(Origem + "tempBackup", backuplocal2 + "\\BackupJR");
+                        Compress(_configBackup.Origem + "tempBackup", _configBackup.LocalBackup2 + "\\BackupJR");
                     }
                     catch
                     {
-                        ConverteNomeUnidade2();
-                        Compress(Origem + "tempBackup", backuplocal2 + "\\BackupJR");
+                        Compress(_configBackup.Origem + "tempBackup", _configBackup.LocalBackup2 + "\\BackupJR");
                     }
                 }
 
-                if (Directory.Exists(Origem + "tempBackup"))
+                if (Directory.Exists(_configBackup.Origem + "tempBackup"))
                 {
-                    Directory.Delete(Origem + "tempBackup", true);
+                    Directory.Delete(_configBackup.Origem + "tempBackup", true);
                 }
-
-                string caminhoArquivos = backuplocal + "\\BackupJR\\";
+                
+                string caminhoArquivos = _configBackup.LocalBackup1 + "\\BackupJR\\";
                 ListarArquivosDiretorioEDeleta(caminhoArquivos);
 
-                if (backuplocal2 != "0")
+                if (_configBackup.LocalBackup2 != "0")
                 {
-                    caminhoArquivos = backuplocal2 + "\\BackupJR\\";
+                    caminhoArquivos = _configBackup.LocalBackup2 + "\\BackupJR\\";
                     ListarArquivosDiretorioEDeleta(caminhoArquivos);
                 }
-
-                JRBackup_Service.Agendador Tarefa = new JRBackup_Service.Agendador();
-                Tarefa.CriarTarefa();
             }
             catch (Exception e)
             {
-                EnviaEmail(e.ToString() + mensagemErro, "Erro no Backup cliente " + valores[0]);
+                
             }
         }
 
@@ -382,59 +323,52 @@ namespace JR_BACKUP
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             TestarBackup.IsEnabled = true;
-        }
-
-        private void RadioDiario_Checked(object sender, RoutedEventArgs e)
-        {
-            GroupSemanal.IsEnabled = false;
-            DiaMes.IsEnabled = false;
-        }
-
-        private void RadioSemanal_Checked(object sender, RoutedEventArgs e)
-        {
-            GroupSemanal.IsEnabled = true;
-            DiaMes.IsEnabled = false;
-        }
-
-        private void RadioMensal_Checked(object sender, RoutedEventArgs e)
-        {
-            GroupSemanal.IsEnabled = false;
-            DiaMes.IsEnabled = true;
+            Cancelar.IsEnabled = true;
+            SalvarAlteracoes.IsEnabled = true;
+            Ativo.IsEnabled = true;
+            LocalBackup.IsEnabled = true;
+            LocalBackup2.IsEnabled = true;
+            CbxOrigem.IsEnabled = true;
+            Hora1.IsEnabled = true;
+            Hora2.IsEnabled = true;
+            Hora3.IsEnabled = true;
+            Hora4.IsEnabled = true;
+            Hora5.IsEnabled = true;
+            Hora6.IsEnabled = true;
+            lblFazendoAguarde.Visibility = Visibility.Hidden;
+            System.Windows.MessageBox.Show("Backup Realizado com Sucesso!","Sucesso",MessageBoxButton.OK,MessageBoxImage.Information);
         }
 
         private void SalvarAlteracoes_Click(object sender, RoutedEventArgs e)
         {
-            LabelInfoOther.Content = "...";
             try
             {
                 var linha0 = string.Empty; if (LocalBackup.Text != string.Empty) { linha0 = LocalBackup.Text; } else { linha0 = @"c:\"; }
-                var linha1 = string.Empty; if (RadioDiario.IsChecked == true) { linha1 = "1"; } else if (RadioDiario.IsChecked == false && RadioSemanal.IsChecked == false && RadioMensal.IsChecked == false) { linha1 = "1"; } else { linha1 = "0"; }
-                var linha2 = string.Empty; if (RadioSemanal.IsChecked == true) { linha2 = "1"; } else { linha2 = "0"; }
-                var linha3 = string.Empty; if (RadioMensal.IsChecked == true) { linha3 = "1"; } else { linha3 = "0"; }
+                var linha1 = string.Empty;
+                var linha2 = string.Empty;
+                var linha3 = string.Empty;
                 var linha4 = string.Empty; if (Hora1.Text != "") { linha4 = Hora1.Text; } else { linha4 = "12:00"; }
                 var linha5 = string.Empty; if (Hora2.Text != "") { linha5 = Hora2.Text; } else { linha5 = ":"; }
                 var linha6 = string.Empty; if (Hora3.Text != "") { linha6 = Hora3.Text; } else { linha6 = ":"; }
                 var linha7 = string.Empty; if (Hora4.Text != "") { linha7 = Hora4.Text; } else { linha7 = ":"; }
                 var linha8 = string.Empty; if (Hora5.Text != "") { linha8 = Hora5.Text; } else { linha8 = ":"; }
                 var linha9 = string.Empty; if (Hora6.Text != "") { linha9 = Hora6.Text; } else { linha9 = ":"; }
-                var linha10 = string.Empty; if (CheckSegunda.IsChecked == true && GroupSemanal.IsEnabled == true) { linha10 = "1"; } else { linha10 = "0"; }
-                var linha11 = string.Empty; if (CheckTerca.IsChecked == true && GroupSemanal.IsEnabled == true) { linha11 = "1"; } else { linha11 = "0"; }
-                var linha12 = string.Empty; if (CheckQuarta.IsChecked == true && GroupSemanal.IsEnabled == true) { linha12 = "1"; } else { linha12 = "0"; }
-                var linha13 = string.Empty; if (CheckQuinta.IsChecked == true && GroupSemanal.IsEnabled == true) { linha13 = "1"; } else { linha13 = "0"; }
-                var linha14 = string.Empty; if (CheckSexta.IsChecked == true && GroupSemanal.IsEnabled == true) { linha14 = "1"; } else { linha14 = "0"; }
-                var linha15 = string.Empty; if (CheckSabado.IsChecked == true && GroupSemanal.IsEnabled == true) { linha15 = "1"; } else { linha15 = "0"; }
-                var linha16 = string.Empty; if (CheckDomingo.IsChecked == true && GroupSemanal.IsEnabled == true) { linha16 = "1"; } else { linha16 = "0"; }
-                var linha17 = string.Empty; if (DiaMes.Text != "") { linha17 = DiaMes.Text; } else { linha17 = "0"; }
+                var linha10 = string.Empty;
+                var linha11 = string.Empty;
+                var linha12 = string.Empty;
+                var linha13 = string.Empty;
+                var linha14 = string.Empty;
+                var linha15 = string.Empty;
+                var linha16 = string.Empty;
+                var linha17 = string.Empty;
                 var linha18 = string.Empty; if (Ativo.IsChecked == true) { linha18 = "1"; } else { linha18 = "0"; }
-                var linha19 = string.Empty; linha19 = valores[0];
-                var linha20 = string.Empty; linha20 = valores[1];
-                var linha21 = string.Empty; linha21 = valores[2];
+                var linha19 = string.Empty; 
+                var linha20 = string.Empty; 
+                var linha21 = string.Empty; 
                 var linha22 = string.Empty; if (LocalBackup2.Text != string.Empty) { linha22 = LocalBackup2.Text; } else { linha22 = "0"; }
                 var linha23 = @"C:\"; if (CbxOrigem.Text != string.Empty) { linha23 = CbxOrigem.Text; }
-                ConverteNomeUnidade();
-                ConverteNomeUnidade2();
-                var linha24 = Destino1;
-                var linha25 = Destino2;
+                var linha24 = string.Empty;
+                var linha25 = string.Empty;
 
                 if (File.Exists(@"c:\gsn\ConfigBackup.ini"))
                 {
@@ -545,7 +479,7 @@ namespace JR_BACKUP
             }
             catch (Exception ex)
             {
-                EnviaEmail(ex.ToString() + mensagemErro, "Erro no Backup cliente " + valores[0]);
+                
             }
         }
 
@@ -593,7 +527,7 @@ namespace JR_BACKUP
             }
             catch (Exception ex)
             {
-                EnviaEmail(ex.ToString() + mensagemErro, "Erro no Backup cliente " + valores[0]);
+
             }
         }
 
@@ -613,12 +547,12 @@ namespace JR_BACKUP
 
         private void LocalBackup_TextChanged(object sender, TextChangedEventArgs e)
         {
-            backuplocal = LocalBackup.Text;
+            _configBackup.LocalBackup1 = LocalBackup.Text;
         }
 
         private void LocalBackup2_TextChanged(object sender, TextChangedEventArgs e)
         {
-            backuplocal2 = LocalBackup2.Text;
+            _configBackup.LocalBackup2 = LocalBackup2.Text;
         }
     }
 }
